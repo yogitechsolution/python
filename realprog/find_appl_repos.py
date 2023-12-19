@@ -4,6 +4,7 @@
 # Importing modules
 import yaml
 import subprocess
+import os
 
 # Function to get the product file in scrop2 or scrop2plus
 def get_group_vars_file(product_name: str):
@@ -12,9 +13,12 @@ def get_group_vars_file(product_name: str):
     temp_dir = result.stdout.strip()
     print(temp_dir)
     #Clone the repo in temp directory
-    command = f"git clone https://gitlab.collaborationlayer-traton.com/ats-project/ats-project-group/scania-ats/ats-product-{product_name}.git"
+    #command = f"git clone https://gitlab.collaborationlayer-traton.com/ats-project/ats-project-group/scania-ats/ats-product-{product_name}.git"
+
+    command = f"git clone https://gitlab-ci-token:{os.getenv('CI_JOB_TOKEN')}@{os.getenv('CI_SERVER_HOST')}/{os.getenv('ATS_CI_NAMESPACE')}/ats-product-{product_name}.git"
     subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8", cwd=temp_dir)
     group_vars_file = f"{temp_dir}/ats-product-{product_name}/group_vars/{product_name}.yml"
+    print(os.listdir(temp_dir))
     return group_vars_file
 
 # Function to save the application repos
