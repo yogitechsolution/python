@@ -1,0 +1,14 @@
+stages:
+  - update_mr_templates
+
+update_mr_templates:
+  image: $CI_DEPENDENCY_PROXY_DIRECT_GROUP_IMAGE_PREFIX/python:3.8
+  stage: update_mr_templates
+  before_script:
+    - pip3 install pyyaml
+    - git config --global user.email "$GITLAB_USER_EMAIL"
+    - git config --global user.name "$GITLAB_USER_NAME"
+
+  script:
+    - python3  scripts/find_appl_repos.py
+    - cat scrop2_appl_repos.txt
