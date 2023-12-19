@@ -1,3 +1,4 @@
+# Used for script testing realprog/find_appl_repos.py
 stages:
   - update_mr_templates
 
